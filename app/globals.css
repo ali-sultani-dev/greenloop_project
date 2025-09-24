@@ -1,26 +1,305 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Updated to nature-inspired environmental color palette */
+  --background: #ffffff; /* Pure white background */
+  --foreground: #475569; /* Deep gray for readability */
+  --card: #f1f5f9; /* Soft light gray cards */
+  --card-foreground: #475569; /* Card text */
+  --popover: rgba(255, 255, 255, 0.95); /* Semi-transparent popover */
+  --popover-foreground: #475569; /* Popover text */
+  --primary: #059669; /* Emerald green - lush vitality */
+  --primary-foreground: #ffffff; /* White text on primary */
+  --secondary: #10b981; /* Bright green accent */
+  --secondary-foreground: #ffffff; /* White text on secondary */
+  --muted: #f1f5f9; /* Muted background */
+  --muted-foreground: #64748b; /* Muted text */
+  --accent: #10b981; /* Vibrant green for highlights */
+  --accent-foreground: #ffffff; /* White text on accent */
+  --destructive: #be123c; /* Rose red for destructive actions */
+  --destructive-foreground: #ffffff; /* White text on destructive */
+  --border: #e2e8f0; /* Light border */
+  --input: #ffffff; /* Input background */
+  --ring: rgba(5, 150, 105, 0.4); /* Green focus ring */
+  --chart-1: #059669; /* Primary green for charts */
+  --chart-2: #10b981; /* Accent green */
+  --chart-3: #0891b2; /* Ocean blue */
+  --chart-4: #7c3aed; /* Nature purple */
+  --chart-5: #ea580c; /* Earth orange */
+  --radius: 0.75rem; /* Softer, more organic radius */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #475569;
+  --sidebar-primary: #059669;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #10b981;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: rgba(5, 150, 105, 0.3);
+}
+
+.dark {
+  /* Dark mode with nature-inspired colors */
+  --background: #0f172a; /* Deep night sky */
+  --foreground: #f1f5f9; /* Light foreground */
+  --card: #1e293b; /* Dark slate cards */
+  --card-foreground: #f1f5f9; /* Light card text */
+  --popover: rgba(15, 23, 42, 0.95); /* Dark popover */
+  --popover-foreground: #f1f5f9; /* Light popover text */
+  --primary: #10b981; /* Bright green in dark mode */
+  --primary-foreground: #ffffff; /* White text */
+  --secondary: #059669; /* Deeper green secondary */
+  --secondary-foreground: #ffffff; /* White text */
+  --muted: #334155; /* Dark muted */
+  --muted-foreground: #94a3b8; /* Muted text */
+  --accent: #10b981; /* Bright green accent */
+  --accent-foreground: #ffffff; /* White text */
+  --destructive: #f43f5e; /* Bright red for dark mode */
+  --destructive-foreground: #ffffff; /* White text */
+  --border: #334155; /* Dark borders */
+  --input: #1e293b; /* Dark input */
+  --ring: rgba(16, 185, 129, 0.4); /* Green focus ring */
+  --chart-1: #10b981; /* Bright green for dark charts */
+  --chart-2: #059669; /* Deep green */
+  --chart-3: #0891b2; /* Ocean blue */
+  --chart-4: #8b5cf6; /* Purple */
+  --chart-5: #f97316; /* Orange */
+  --sidebar: #1e293b;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #10b981;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #059669;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #334155;
+  --sidebar-ring: rgba(16, 185, 129, 0.3);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Enhanced environmental animations and organic effects */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+}
+
+@keyframes leaf-sway {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(2deg) scale(1.02);
+  }
+  75% {
+    transform: rotate(-2deg) scale(0.98);
+  }
+}
+
+@keyframes nature-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(5, 150, 105, 0.3), 0 0 20px rgba(16, 185, 129, 0.1);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(5, 150, 105, 0.5), 0 0 40px rgba(16, 185, 129, 0.2);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes organic-slide-up {
+  from {
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-leaf-sway {
+  animation: leaf-sway 4s ease-in-out infinite;
+}
+
+.animate-nature-pulse {
+  animation: nature-pulse 3s ease-in-out infinite;
+}
+
+.animate-organic-slide-up {
+  animation: organic-slide-up 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(5, 150, 105, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Organic gradient borders with nature-inspired colors */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.08), rgba(16, 185, 129, 0.05), rgba(8, 145, 178, 0.03));
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.6), rgba(16, 185, 129, 0.4), rgba(8, 145, 178, 0.3));
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+}
+
+/* Nature-inspired organic shapes and patterns */
+.organic-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(241, 245, 249, 0.8) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 24px 8px 24px 8px;
+  border: 1px solid rgba(5, 150, 105, 0.1);
+}
+
+.nature-pattern {
+  background-image: radial-gradient(circle at 25% 25%, rgba(5, 150, 105, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+}
+
+.leaf-shadow {
+  box-shadow: 0 4px 20px rgba(5, 150, 105, 0.1), 0 2px 10px rgba(16, 185, 129, 0.05), inset 0 1px 0
+    rgba(255, 255, 255, 0.1);
+}
+
+/* Environmental progress indicators */
+.eco-progress {
+  background: linear-gradient(
+    90deg,
+    rgba(5, 150, 105, 0.1) 0%,
+    rgba(16, 185, 129, 0.2) 50%,
+    rgba(5, 150, 105, 0.1) 100%
+  );
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.eco-progress::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Seasonal theme utilities */
+.spring-theme {
+  --accent: #10b981; /* Fresh green */
+  --chart-1: #059669; /* Deep forest */
+}
+
+.summer-theme {
+  --accent: #0891b2; /* Ocean blue */
+  --chart-1: #06b6d4; /* Sky blue */
+}
+
+.autumn-theme {
+  --accent: #ea580c; /* Warm orange */
+  --chart-1: #dc2626; /* Deep red */
+}
+
+.winter-theme {
+  --accent: #6366f1; /* Cool purple */
+  --chart-1: #3b82f6; /* Winter blue */
 }
