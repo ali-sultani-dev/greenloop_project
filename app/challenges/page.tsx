@@ -720,7 +720,7 @@ export default function ChallengesPage() {
                   <Card className="bg-primary/5 border-primary/20">
                     <CardContent className="p-4 text-center">
                       <div className="text-2xl font-bold text-primary">{myParticipations.length}</div>
-                      <p className="text-sm text-muted-foreground">Active Challenges</p>
+                      <p className="text-sm text-muted-foreground">Total Challenges</p>
                     </CardContent>
                   </Card>
                   <Card className="bg-accent/5 border-accent/20">
