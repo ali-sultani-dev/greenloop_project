@@ -1,3 +1,7 @@
+[![Live App](https://img.shields.io/badge/Live%20App-Visit-green)](https://website-greenloop.vercel.app)
+
+🌐 **Access the app here:** [website-greenloop.vercel.app](https://website-greenloop.vercel.app)
+
 # GreenLoop - Employee Sustainability Platform
 
 A comprehensive employee engagement platform designed to promote sustainability initiatives, track environmental impact, and build a greener workplace culture through gamification and team collaboration.
