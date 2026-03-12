@@ -51,7 +51,7 @@ export const NotificationHelpers = {
       user_id,
       type: "action_status",
       title: "Action Approved! ✅",
-      message: `Your action '${actionName}' has been approved! +${points} points earned${co2Impact ? ` • ${co2Impact} CO2 impact` : ""}`,
+      message: `Your action '${actionName}' has been approved! +${points} points earned${co2Impact ? ` • Green Score: ${co2Impact}` : ""}`,
       link_url: "/actions",
       link_type: "action",
     }),
