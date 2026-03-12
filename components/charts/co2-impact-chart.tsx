@@ -15,7 +15,7 @@ export function CO2ImpactChart({ data }: CO2ImpactChartProps) {
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[300px] text-muted-foreground">
-        <p>No data available yet. Complete some actions to see your CO₂ impact!</p>
+        <p>No data available yet. Complete some actions to see your Green Score!</p>
       </div>
     )
   }

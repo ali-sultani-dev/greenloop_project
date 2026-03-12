@@ -221,7 +221,7 @@ export function LeaderboardSection({
         <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="points">Points</TabsTrigger>
-            <TabsTrigger value="co2">CO₂ Saved</TabsTrigger>
+            <TabsTrigger value="co2">Green Score</TabsTrigger>
             <TabsTrigger value="actions">Monthly Actions</TabsTrigger>
           </TabsList>
 
@@ -238,12 +238,12 @@ export function LeaderboardSection({
           <TabsContent value="co2" className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
               <Leaf className="h-5 w-5 text-accent" />
-              <h3 className="font-medium">Top CO₂ Savers</h3>
+              <h3 className="font-medium">Top Green Score</h3>
             </div>
             {renderUserList(
               topByCO2,
               "total_co2_saved",
-              "CO₂ Saved",
+              "Green Score",
               <Leaf className="h-12 w-12 mx-auto mb-4 opacity-50" />,
             )}
           </TabsContent>

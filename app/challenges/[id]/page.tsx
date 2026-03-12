@@ -392,7 +392,7 @@ export default async function ChallengeDetailPage({ params }: { params: { id: st
       case "points":
         return `${progress} pts`
       case "co2_saved":
-        return `${progress} kg CO2`
+        return `Green Score: ${progress}`
       default:
         return progress.toString()
     }
@@ -724,7 +724,7 @@ export default async function ChallengeDetailPage({ params }: { params: { id: st
                                 <p className="font-bold text-primary">+{activity.metadata.points_earned} pts</p>
                               )}
                               {activity.metadata?.co2_saved && (
-                                <p className="text-sm text-green-600">-{activity.metadata.co2_saved} kg CO₂</p>
+                                <p className="text-sm text-green-600">Green Score: {activity.metadata.co2_saved}</p>
                               )}
                               {activity.metadata?.new_progress && (
                                 <p className="text-sm text-blue-600">
@@ -737,7 +737,7 @@ export default async function ChallengeDetailPage({ params }: { params: { id: st
                             <div className="space-y-1">
                               <p className="font-bold text-primary">+{activity.action?.points_value} pts</p>
                               {activity.action?.co2_impact && (
-                                <p className="text-sm text-green-600">-{activity.action.co2_impact} kg CO₂</p>
+                                <p className="text-sm text-green-600">Green Score: {activity.action.co2_impact}</p>
                               )}
                             </div>
                           )}

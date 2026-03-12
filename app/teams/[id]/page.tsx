@@ -164,8 +164,8 @@ export default async function TeamPage({ params }: TeamPageProps) {
                   <p className="text-sm text-muted-foreground">Total Points</p>
                 </div>
                 <div className="text-center p-4 bg-background/50 rounded-lg">
-                  <div className="text-2xl font-bold text-accent">{Math.round(team.total_co2_saved)}kg</div>
-                  <p className="text-sm text-muted-foreground">CO₂ Saved</p>
+                  <div className="text-2xl font-bold text-accent">{Math.round(team.total_co2_saved)}</div>
+                  <p className="text-sm text-muted-foreground">Green Score</p>
                 </div>
                 <div className="text-center p-4 bg-background/50 rounded-lg">
                   <div className="text-2xl font-bold">{totalMembers}</div>
@@ -232,7 +232,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                         <div className="text-right">
                           <div className="text-sm font-medium">{member.users?.points} pts</div>
                           <div className="text-xs text-muted-foreground">Level {member.users?.level}</div>
-                          <div className="text-xs text-accent">{Math.round(member.users?.total_co2_saved)}kg CO₂</div>
+                          <div className="text-xs text-accent">Green Score: {Math.round(member.users?.total_co2_saved)}</div>
                           <div className="text-xs text-muted-foreground">{member.users?.verified_actions} actions</div>
                         </div>
                         {member.role !== "leader" && (
@@ -365,12 +365,12 @@ export default async function TeamPage({ params }: TeamPageProps) {
                       <span className="font-medium">{avgPointsPerMember}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Total CO₂ Saved</span>
-                      <span className="font-medium">{Math.round(team.total_co2_saved)}kg</span>
+                      <span className="text-muted-foreground">Total Green Score</span>
+                      <span className="font-medium">{Math.round(team.total_co2_saved)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Average CO₂ per Member</span>
-                      <span className="font-medium">{avgCO2PerMember}kg</span>
+                      <span className="text-muted-foreground">Average Green Score per Member</span>
+                      <span className="font-medium">{avgCO2PerMember}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Total Actions Completed</span>

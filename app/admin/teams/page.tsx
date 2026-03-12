@@ -280,7 +280,7 @@ export default function AdminTeamsPage() {
                   <TableHead>Leader</TableHead>
                   <TableHead>Members</TableHead>
                   <TableHead>Performance</TableHead>
-                  <TableHead>CO₂ Impact</TableHead>
+                  <TableHead>Green Score</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Created</TableHead>
                   <TableHead className="w-[50px]">Actions</TableHead>

@@ -202,11 +202,11 @@ export default function AnalyticsCharts({
       ["Total Actions", totalActionsCount],
       ["Total Teams", totalTeamsCount],
       ["Active Challenges", activeChallengesCount],
-      ["Total CO2 Saved (kg)", Math.round(totalCO2Saved)],
+      ["Total Green Score", Math.round(totalCO2Saved)],
       ["Total Points Earned", Math.round(totalPointsEarned)],
       [""],
       ["Category Breakdown", ""],
-      ...categoryBreakdown.map((cat) => [cat.name, `${cat.value} actions, ${Math.round(cat.co2)}kg CO2`]),
+      ...categoryBreakdown.map((cat) => [cat.name, `${cat.value} actions, Green Score: ${Math.round(cat.co2)}`]),
     ]
       .map((row) => row.join(","))
       .join("\n")
@@ -278,11 +278,11 @@ export default function AnalyticsCharts({
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">CO₂ Saved</CardTitle>
+              <CardTitle className="text-sm font-medium">Green Score</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{Math.round(totalCO2Saved)}kg</div>
+              <div className="text-2xl font-bold">{Math.round(totalCO2Saved)}</div>
               <p className="text-xs text-muted-foreground">Total environmental impact</p>
             </CardContent>
           </Card>
@@ -419,7 +419,7 @@ export default function AnalyticsCharts({
                       <Tooltip />
                       <Line type="monotone" dataKey="actions" stroke="#0891b2" strokeWidth={2} name="Actions" />
                       <Line type="monotone" dataKey="points" stroke="#d97706" strokeWidth={2} name="Points" />
-                      <Line type="monotone" dataKey="co2" stroke="#34d399" strokeWidth={2} name="CO₂ Saved (kg)" />
+                      <Line type="monotone" dataKey="co2" stroke="#34d399" strokeWidth={2} name="Green Score" />
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
@@ -435,7 +435,7 @@ export default function AnalyticsCharts({
             <Tabs defaultValue="points" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="points">Points</TabsTrigger>
-                <TabsTrigger value="co2">CO₂ Saved</TabsTrigger>
+                <TabsTrigger value="co2">Green Score</TabsTrigger>
                 <TabsTrigger value="actions">Monthly Actions</TabsTrigger>
               </TabsList>
 
@@ -534,8 +534,8 @@ export default function AnalyticsCharts({
                             </div>
 
                             <div className="text-right">
-                              <div className="text-lg font-bold text-accent">{user.total_co2_saved}kg</div>
-                              <div className="text-xs text-muted-foreground">CO₂ Saved</div>
+                              <div className="text-lg font-bold text-accent">{user.total_co2_saved}</div>
+                              <div className="text-xs text-muted-foreground">Green Score</div>
                             </div>
                           </div>
                         ))}
@@ -653,9 +653,9 @@ export default function AnalyticsCharts({
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold" style={{ color: category.color }}>
-                        {Math.round(category.co2)}kg
+                        {Math.round(category.co2)}
                       </div>
-                      <p className="text-xs text-muted-foreground">CO₂ saved</p>
+                      <p className="text-xs text-muted-foreground">Green Score</p>
                       <p className="text-xs text-muted-foreground">{category.value} actions</p>
                     </CardContent>
                   </Card>

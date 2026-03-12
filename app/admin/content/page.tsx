@@ -270,7 +270,7 @@ export default function AdminContentPage() {
 
   const handleExportAdmin = () => {
     const csvContent = [
-      ["Title", "Type", "Category", "Status", "Points", "CO2 Impact", "Created"].join(","),
+      ["Title", "Type", "Category", "Status", "Points", "Green Score", "Created"].join(","),
       ...filteredAdminActions.map((item) =>
         [
           `"${item.title}"`,
@@ -295,7 +295,7 @@ export default function AdminContentPage() {
 
   const handleExportUser = () => {
     const csvContent = [
-      ["Title", "Type", "Category", "Status", "Points", "CO2 Impact", "Submitted By", "Created"].join(","),
+      ["Title", "Type", "Category", "Status", "Points", "Green Score", "Submitted By", "Created"].join(","),
       ...filteredUserActions.map((item) =>
         [
           `"${item.title}"`,
@@ -419,7 +419,7 @@ export default function AdminContentPage() {
                             <TableHead>Action</TableHead>
                             <TableHead>Category</TableHead>
                             <TableHead>Points</TableHead>
-                            <TableHead>CO₂ Impact</TableHead>
+                            <TableHead>Green Score</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Created</TableHead>
                             <TableHead className="w-[100px]">Actions</TableHead>
@@ -443,7 +443,7 @@ export default function AdminContentPage() {
                                 <div className="font-medium">{action.points || action.points_value}</div>
                               </TableCell>
                               <TableCell>
-                                <div className="font-medium">{action.co2_impact}kg</div>
+                                <div className="font-medium">{action.co2_impact}</div>
                               </TableCell>
                               <TableCell>
                                 <Badge
@@ -509,7 +509,7 @@ export default function AdminContentPage() {
                             <TableHead>Action</TableHead>
                             <TableHead>Category</TableHead>
                             <TableHead>Points</TableHead>
-                            <TableHead>CO₂ Impact</TableHead>
+                            <TableHead>Green Score</TableHead>
                             <TableHead>Submitted By</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Created</TableHead>
@@ -534,7 +534,7 @@ export default function AdminContentPage() {
                                 <div className="font-medium">{action.points || action.points_value}</div>
                               </TableCell>
                               <TableCell>
-                                <div className="font-medium">{action.co2_impact}kg</div>
+                                <div className="font-medium">{action.co2_impact}</div>
                               </TableCell>
                               <TableCell>
                                 <div>

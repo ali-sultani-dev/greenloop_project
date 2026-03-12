@@ -427,7 +427,7 @@ export default function ProfilePage() {
                       <div className="p-2 bg-accent/10 rounded-lg">
                         <Leaf className="h-4 w-4 text-accent" />
                       </div>
-                      <span className="text-sm font-medium">CO₂ Saved</span>
+                      <span className="text-sm font-medium">Green Score</span>
                     </div>
                     <Badge variant="secondary">{user?.total_co2_saved || 0}kg</Badge>
                   </div>

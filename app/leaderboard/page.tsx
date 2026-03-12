@@ -146,7 +146,7 @@ export default async function LeaderboardPage() {
                   <div className="text-2xl font-bold text-accent">
                     #{findUserRank(topByCO2 || [], userProfile?.id || "") || "N/A"}
                   </div>
-                  <p className="text-sm text-muted-foreground">CO₂ Saved Ranking</p>
+                  <p className="text-sm text-muted-foreground">Green Score Ranking</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">
@@ -162,7 +162,7 @@ export default async function LeaderboardPage() {
           <Tabs defaultValue="points" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="points">Points</TabsTrigger>
-              <TabsTrigger value="co2">CO₂ Saved</TabsTrigger>
+              <TabsTrigger value="co2">Green Score</TabsTrigger>
               <TabsTrigger value="actions">Monthly Actions</TabsTrigger>
               <TabsTrigger value="departments">Departments</TabsTrigger>
             </TabsList>
@@ -267,8 +267,8 @@ export default async function LeaderboardPage() {
                         </div>
 
                         <div className="text-right">
-                          <div className="text-lg font-bold text-accent">{user.total_co2_saved}kg</div>
-                          <div className="text-xs text-muted-foreground">CO₂ Saved</div>
+                          <div className="text-lg font-bold text-accent">{user.total_co2_saved}</div>
+                          <div className="text-xs text-muted-foreground">Green Score</div>
                         </div>
                       </div>
                     ))}
@@ -378,7 +378,7 @@ export default async function LeaderboardPage() {
                           <div className="text-right space-y-1">
                             <div className="text-lg font-bold text-purple-600">{dept.total_points} pts</div>
                             <div className="text-xs text-muted-foreground">
-                              {dept.total_co2_saved}kg CO₂ • {dept.total_actions} actions
+                              Green Score: {dept.total_co2_saved} • {dept.total_actions} actions
                             </div>
                           </div>
                         </div>

@@ -81,7 +81,7 @@ export default async function BadgesPage() {
       case "actions":
         return `${actionCount} / ${badge.criteria_value} actions`
       case "co2_saved":
-        return `${Math.floor(userProfile?.total_co2_saved || 0)} / ${badge.criteria_value}kg CO₂`
+        return `Green Score: ${Math.floor(userProfile?.total_co2_saved || 0)} / ${badge.criteria_value}`
       default:
         return ""
     }

@@ -446,7 +446,7 @@ export function ContentCrudModal({
 
           {formData.type === "action" && (
             <div className="space-y-2">
-              <Label htmlFor="co2_impact">CO₂ Impact (kg)</Label>
+              <Label htmlFor="co2_impact">Green Score</Label>
               <Input
                 id="co2_impact"
                 type="number"
