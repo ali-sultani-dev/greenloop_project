@@ -91,6 +91,16 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Fetch auto-approval threshold from system settings
+    const { data: thresholdSetting } = await supabase
+      .from("system_settings")
+      .select("setting_value")
+      .eq("key", "action_auto_approve_threshold")
+      .single()
+
+    const autoApproveThreshold = thresholdSetting ? Number.parseInt(thresholdSetting.setting_value) || 0 : 0
+    const shouldAutoApprove = autoApproveThreshold > 0 && action.points_value <= autoApproveThreshold
+
     const { data: actionLog, error: logError } = await supabase
       .from("user_actions")
       .insert({
@@ -99,8 +109,11 @@ export async function POST(request: NextRequest) {
         points_earned: action.points_value,
         co2_saved: action.co2_impact,
         notes: notes || null,
-        verification_status: "pending", // All actions now require verification
+        verification_status: shouldAutoApprove ? "approved" : "pending",
         photo_url: photo_url || null,
+        ...(shouldAutoApprove && {
+          verified_at: new Date().toISOString(),
+        }),
       })
       .select()
       .single()
@@ -114,17 +127,40 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Points and CO2 will be awarded when admin approves the action
+    // If auto-approved, award points immediately
+    if (shouldAutoApprove) {
+      const { error: pointsUpdateError } = await supabase
+        .from("users")
+        .update({
+          points: userProfile.points + action.points_value,
+        })
+        .eq("id", user.id)
+
+      if (pointsUpdateError) {
+        console.error("Failed to update user points:", pointsUpdateError)
+      }
+
+      // Create points transaction
+      await supabase.from("point_transactions").insert({
+        user_id: user.id,
+        points: action.points_value,
+        transaction_type: "earned",
+        reference_type: "action",
+        reference_id: actionLog.id,
+        description: `Completed: ${action.title} (Auto-approved)`,
+      })
+    }
 
     return NextResponse.json(
       {
         success: true,
         data: {
-          userAction: actionLog, // Return userAction for photo upload reference
+          userAction: actionLog,
           action_log: actionLog,
           points_earned: action.points_value,
           co2_saved: action.co2_impact,
-          verification_required: true, // All actions now require verification
+          verification_required: !shouldAutoApprove,
+          auto_approved: shouldAutoApprove,
         },
       },
       { status: 201 },
