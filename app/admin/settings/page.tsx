@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
-import { Settings, Save, Globe, Loader2, Trophy } from "lucide-react"
+import { Settings, Save, Globe, Loader2, Trophy, CheckCircle } from "lucide-react"
 
 interface SystemSettings {
   platform_name: string
@@ -17,6 +17,7 @@ interface SystemSettings {
   max_team_size: number
   team_creation_enabled: boolean
   user_registration_enabled: boolean
+  action_auto_approve_threshold: number
 }
 
 interface LevelThreshold {
@@ -31,6 +32,7 @@ const DEFAULT_SETTINGS: SystemSettings = {
   max_team_size: 10,
   team_creation_enabled: true,
   user_registration_enabled: true,
+  action_auto_approve_threshold: 0,
 }
 
 export default function AdminSettingsPage() {
@@ -330,6 +332,46 @@ export default function AdminSettingsPage() {
                       className="h-14 text-lg border-2 focus:border-primary transition-colors"
                       placeholder="10"
                     />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-lg border-2">
+              <CardHeader className="pb-6 bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-950/20 dark:to-emerald-900/20 rounded-t-lg">
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <CheckCircle className="h-7 w-7 text-emerald-600" />
+                  Action Auto-Approval
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  Configure automatic approval for low-point actions
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <div className="p-4 bg-muted/50 border rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      Actions with a points value <strong>at or below</strong> the threshold will be automatically approved when logged.
+                      Actions <strong>above</strong> the threshold will require manual admin review.
+                      Set to <strong>0</strong> to require approval for all actions.
+                    </p>
+                  </div>
+                  <div className="space-y-3">
+                    <Label htmlFor="auto-approve-threshold" className="text-lg font-semibold text-foreground">
+                      Auto-Approval Points Threshold
+                    </Label>
+                    <Input
+                      id="auto-approve-threshold"
+                      type="number"
+                      min="0"
+                      value={settings?.action_auto_approve_threshold ?? 0}
+                      onChange={(e) => updateSetting("action_auto_approve_threshold", Math.max(0, Number.parseInt(e.target.value) || 0))}
+                      className="h-14 text-lg border-2 focus:border-primary transition-colors max-w-xs"
+                      placeholder="0"
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      Current: Actions worth {settings?.action_auto_approve_threshold || 0} points or less will be auto-approved.
+                    </p>
                   </div>
                 </div>
               </CardContent>

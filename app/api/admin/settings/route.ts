@@ -100,6 +100,12 @@ export async function POST(request: NextRequest) {
         data_type: "boolean",
         category: "users",
       },
+      {
+        key: "action_auto_approve_threshold",
+        setting_value: (settings.action_auto_approve_threshold ?? 0).toString(),
+        data_type: "number",
+        category: "actions",
+      },
     ]
 
     // Use upsert for better reliability
