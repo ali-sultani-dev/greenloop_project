@@ -289,9 +289,9 @@ export default function ManageMembersPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total CO₂ Saved</p>
+                <p className="text-sm text-muted-foreground">Total Green Score</p>
                 <p className="text-2xl font-bold text-green-600">
-                  {Math.round(members.reduce((sum, member) => sum + member.total_co2_saved, 0))}kg
+                  {Math.round(members.reduce((sum, member) => sum + member.total_co2_saved, 0))}
                 </p>
               </div>
               <div>
@@ -323,7 +323,7 @@ export default function ManageMembersPage() {
                   <TableHead>Member</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Points</TableHead>
-                  <TableHead>CO₂ Saved</TableHead>
+                  <TableHead>Green Score</TableHead>
                   <TableHead>Actions</TableHead>
                   <TableHead>Joined</TableHead>
                   <TableHead className="w-[50px]">Actions</TableHead>

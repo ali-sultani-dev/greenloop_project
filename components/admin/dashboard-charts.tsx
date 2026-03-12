@@ -130,8 +130,8 @@ export function DashboardCharts({
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm">Total CO₂ Saved:</span>
-                  <span className="font-medium text-green-600">{userStats.total_co2_saved}kg</span>
+                  <span className="text-sm">Total Green Score:</span>
+                  <span className="font-medium text-green-600">{userStats.total_co2_saved}</span>
                 </div>
               </div>
             </div>
@@ -265,7 +265,7 @@ export function DashboardCharts({
                   <div>
                     <div className="font-medium">{team.name}</div>
                     <div className="text-sm text-muted-foreground">
-                      {team.total_points} points • {team.total_co2_saved}kg CO₂ saved
+                      {team.total_points} points • Green Score: {team.total_co2_saved}
                     </div>
                   </div>
                 </div>

@@ -250,7 +250,7 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
                 <CardTitle className="text-xl">Action Logged Successfully!</CardTitle>
                 <CardDescription>
                   Your action has been submitted for review. Upon approval, you'll earn {action.points_value} points and
-                  save {action.co2_impact}kg of CO₂
+                  a Green Score of {action.co2_impact}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -301,7 +301,7 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
                     </div>
                     <div className="flex items-center gap-1 text-sm">
                       <Leaf className="h-4 w-4 text-accent" />
-                      <span className="text-accent">{action.co2_impact}kg CO₂ saved</span>
+                      <span className="text-accent">Green Score: {action.co2_impact}</span>
                     </div>
                     {action.estimated_time_minutes && (
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">

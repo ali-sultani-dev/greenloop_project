@@ -388,7 +388,7 @@ export default function AdminUsersPage() {
                   <TableHead>Level</TableHead>
                   <TableHead>Points</TableHead>
                   <TableHead>Actions</TableHead>
-                  <TableHead>CO₂ Saved</TableHead>
+                  <TableHead>Green Score</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="w-[120px]">Actions</TableHead>
                 </TableRow>

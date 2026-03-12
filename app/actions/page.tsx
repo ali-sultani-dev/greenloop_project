@@ -181,7 +181,7 @@ export default function ActionsPage() {
       },
       {
         key: "co2_impact",
-        label: "CO₂ Impact Range",
+        label: "Green Score Range",
         values: ["0-1", "1-5", "5-10", "10-25", "25+"],
       },
     ],
@@ -336,7 +336,7 @@ export default function ActionsPage() {
                   },
                   {
                     key: "co2_range",
-                    label: "CO₂ Impact Range (kg)",
+                    label: "Green Score Range",
                     values: ["0-1", "1-5", "5-10", "10-25", "25+"],
                   },
                 ]}
@@ -419,7 +419,7 @@ export default function ActionsPage() {
                               </div>
                               <div className="flex items-center gap-1">
                                 <Leaf className="h-4 w-4 text-accent animate-leaf-sway" />
-                                <span className="text-accent">{action.co2_impact}kg CO₂</span>
+                                <span className="text-accent">Green Score: {action.co2_impact}</span>
                               </div>
                             </div>
                           </div>
@@ -512,7 +512,7 @@ export default function ActionsPage() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Leaf className="h-4 w-4 text-accent animate-leaf-sway" />
-                                  <span className="text-accent">{action.co2_impact}kg CO₂</span>
+                                  <span className="text-accent">Green Score: {action.co2_impact}</span>
                                 </div>
                               </div>
 

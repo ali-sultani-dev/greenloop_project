@@ -244,9 +244,8 @@ export default async function DashboardPage() {
             />
 
             <EcoMetricCard
-              title="🌍 CO₂ Saved"
+              title="🌍 Green Score"
               value={userProfile?.total_co2_saved || 0}
-              suffix=" kg"
               icon="leaf"
               description="Environmental impact"
               trend="up"
@@ -314,7 +313,7 @@ export default async function DashboardPage() {
                     <div className="flex items-center gap-3">
                       <div className="text-right">
                         <div className="text-sm font-medium text-primary">+{action.points_value} pts</div>
-                        <div className="text-xs text-muted-foreground">{action.co2_impact}kg CO₂</div>
+                        <div className="text-xs text-muted-foreground">Green Score: {action.co2_impact}</div>
                       </div>
                       <Button size="sm" className="hover-lift leaf-shadow" asChild>
                         <Link href={`/actions/log/${action.id}`}>🌱 Log</Link>

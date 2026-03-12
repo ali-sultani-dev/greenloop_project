@@ -315,7 +315,7 @@ export function UserCrudModal({ isOpen, onClose, user, mode, onSuccess, currentA
                 <div className="p-2 bg-gray-50 rounded border">{formData.points || 0}</div>
               </div>
               <div className="space-y-2">
-                <Label>CO₂ Saved (kg)</Label>
+                <Label>Green Score</Label>
                 <div className="p-2 bg-gray-50 rounded border">{formData.total_co2_saved || 0}</div>
               </div>
             </div>
@@ -434,7 +434,7 @@ export function UserCrudModal({ isOpen, onClose, user, mode, onSuccess, currentA
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="total_co2_saved">CO₂ Saved (kg)</Label>
+                  <Label htmlFor="total_co2_saved">Green Score</Label>
                   <Input
                     id="total_co2_saved"
                     type="number"

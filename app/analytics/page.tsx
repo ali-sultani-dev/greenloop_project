@@ -204,11 +204,11 @@ export default function AnalyticsPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">CO₂ Saved</CardTitle>
+                <CardTitle className="text-sm font-medium">Green Score</CardTitle>
                 <Leaf className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-chart-4">{metrics.totalCO2Saved}kg</div>
+                <div className="text-2xl font-bold text-chart-4">{metrics.totalCO2Saved}</div>
                 <p className="text-xs text-muted-foreground">Carbon footprint reduced</p>
               </CardContent>
             </Card>
@@ -283,8 +283,8 @@ export default function AnalyticsPage() {
                           <IconComponent className="h-4 w-4" style={{ color: config.color }} />
                         </CardHeader>
                         <CardContent>
-                          <div className="text-2xl font-bold">{co2Value as number}kg</div>
-                          <p className="text-xs text-muted-foreground">CO₂ from {category.toLowerCase()} actions</p>
+                          <div className="text-2xl font-bold">{co2Value as number}</div>
+                          <p className="text-xs text-muted-foreground">Green Score from {category.toLowerCase()} actions</p>
                         </CardContent>
                       </Card>
                     )
@@ -304,10 +304,10 @@ export default function AnalyticsPage() {
                 </Card>
               )}
 
-              {/* CO2 Impact Over Time */}
+              {/* Green Score Over Time */}
               <Card>
                 <CardHeader>
-                  <CardTitle>CO₂ Impact Over Time</CardTitle>
+                  <CardTitle>Green Score Over Time</CardTitle>
                   <CardDescription>Your cumulative environmental impact</CardDescription>
                 </CardHeader>
                 <CardContent>

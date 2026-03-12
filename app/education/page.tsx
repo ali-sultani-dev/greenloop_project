@@ -284,7 +284,7 @@ export default function EducationPage() {
                           <div>
                             <span className="font-semibold">🌱 Environmental Impact:</span>
                             <span className="ml-2">
-                              Learn how to save {content.co2_impact}kg CO₂ and help our planet breathe!
+                              This action has a Green Score of {content.co2_impact} — help our planet breathe!
                             </span>
                           </div>
                         </div>

@@ -474,7 +474,7 @@ export default function ActionReviewsPage() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Leaf className="h-4 w-4 text-accent" />
-                              <span>{submission.co2_impact}kg CO₂</span>
+                              <span>Green Score: {submission.co2_impact}</span>
                             </div>
                           </div>
                         )}
@@ -533,7 +533,7 @@ export default function ActionReviewsPage() {
                           </div>
                           <div className="flex items-center gap-1">
                             <Leaf className="h-4 w-4 text-accent" />
-                            <span>{log.co2_saved}kg CO₂</span>
+                            <span>Green Score: {log.co2_saved}</span>
                           </div>
                         </div>
 
@@ -641,7 +641,7 @@ export default function ActionReviewsPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="co2">CO₂ Impact (kg)</Label>
+                      <Label htmlFor="co2">Green Score</Label>
                       <Input
                         id="co2"
                         type="number"

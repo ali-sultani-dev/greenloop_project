@@ -185,8 +185,8 @@ export default async function TeamsPage() {
                       <p className="text-sm text-muted-foreground">Total Points</p>
                     </div>
                     <div className="text-center p-4 bg-background/50 rounded-lg">
-                      <div className="text-2xl font-bold text-accent">{userTeam.total_co2_saved}kg</div>
-                      <p className="text-sm text-muted-foreground">CO₂ Saved</p>
+                      <div className="text-2xl font-bold text-accent">{userTeam.total_co2_saved}</div>
+                      <p className="text-sm text-muted-foreground">Green Score</p>
                     </div>
                     <div className="text-center p-4 bg-background/50 rounded-lg">
                       <div className="text-2xl font-bold">{userTeam.team_members?.length || 0}</div>
@@ -339,8 +339,8 @@ export default async function TeamsPage() {
                             <p className="text-xs text-muted-foreground">Points</p>
                           </div>
                           <div>
-                            <div className="text-lg font-bold text-accent">{team.total_co2_saved}kg</div>
-                            <p className="text-xs text-muted-foreground">CO₂ Saved</p>
+                            <div className="text-lg font-bold text-accent">{team.total_co2_saved}</div>
+                            <p className="text-xs text-muted-foreground">Green Score</p>
                           </div>
                         </div>
 
@@ -417,8 +417,8 @@ export default async function TeamsPage() {
                               <p className="text-sm text-muted-foreground">Points</p>
                             </div>
                             <div>
-                              <div className="text-lg font-bold text-accent">{team.total_co2_saved}kg</div>
-                              <p className="text-sm text-muted-foreground">CO₂ Saved</p>
+                              <div className="text-lg font-bold text-accent">{team.total_co2_saved}</div>
+                              <p className="text-sm text-muted-foreground">Green Score</p>
                             </div>
                           </div>
 
@@ -494,8 +494,8 @@ export default async function TeamsPage() {
                               <p className="text-xs text-muted-foreground">Points</p>
                             </div>
                             <div>
-                              <div className="text-lg font-bold text-accent">{team.total_co2_saved}kg</div>
-                              <p className="text-xs text-muted-foreground">CO₂ Saved</p>
+                              <div className="text-lg font-bold text-accent">{team.total_co2_saved}</div>
+                              <p className="text-xs text-muted-foreground">Green Score</p>
                             </div>
                           </div>
 
