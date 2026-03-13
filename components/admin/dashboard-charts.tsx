@@ -208,7 +208,8 @@ export function DashboardCharts({
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percentage }) => {
+                label={({ name, percent }) => {
+                  const percentage = Math.round((percent as number) * 100)
                   return percentage >= 5 ? `${name} ${percentage}%` : ""
                 }}
                 outerRadius={80}

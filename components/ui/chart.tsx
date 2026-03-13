@@ -118,13 +118,20 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
-}: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
-  React.ComponentProps<"div"> & {
+}: React.ComponentProps<"div"> & {
+    active?: boolean
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload?: any[]
+    label?: string
+    labelFormatter?: (label: string, payload: any[]) => React.ReactNode
+    formatter?: (value: any, name: string, item: any, index: number, payload: any[]) => React.ReactNode
+    color?: string
     hideLabel?: boolean
     hideIndicator?: boolean
     indicator?: "line" | "dot" | "dashed"
     nameKey?: string
     labelKey?: string
+    labelClassName?: string
   }) {
   const { config } = useChart()
 
@@ -144,7 +151,7 @@ function ChartTooltipContent({
     if (labelFormatter) {
       return (
         <div className={cn("font-medium", labelClassName)}>
-          {labelFormatter(value, payload)}
+          {labelFormatter(value as string, payload)}
         </div>
       )
     }
@@ -256,8 +263,10 @@ function ChartLegendContent({
   payload,
   verticalAlign = "bottom",
   nameKey,
-}: React.ComponentProps<"div"> &
-  Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+}: React.ComponentProps<"div"> & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload?: any[]
+    verticalAlign?: "top" | "bottom" | "middle"
     hideIcon?: boolean
     nameKey?: string
   }) {

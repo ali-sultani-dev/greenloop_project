@@ -29,3 +29,5 @@ next-env.d.ts
 .pnpm-lock.yaml
 .DS_Store
 package-lock.json
+
+.claude
