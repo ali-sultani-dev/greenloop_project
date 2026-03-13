@@ -202,7 +202,7 @@ export function Navigation({ user }: NavigationProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center px-4">
+      <div className="container flex h-16 items-center px-4 max-w-full">
         <Link
           href="/dashboard"
           className="flex items-center gap-2 flex-shrink-0 mr-6 group transition-all duration-300 hover:scale-105"
@@ -215,8 +215,8 @@ export function Navigation({ user }: NavigationProps) {
           </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center flex-1">
-          <div className="flex items-center justify-evenly w-full">
+        <nav className="hidden lg:flex items-center flex-1 min-w-0 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-1">
             {getNavigationItems().map((item) => (
               <Link
                 key={item.href}
