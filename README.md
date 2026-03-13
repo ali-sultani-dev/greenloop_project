@@ -1,6 +1,6 @@
-[![Live App](https://img.shields.io/badge/Live%20App-Visit-green)](https://website-greenloop.vercel.app)
+[![Live App](https://img.shields.io/badge/Live%20App-Visit-green)](https://greenloop-project.vercel.app)
 
-🌐 **Access the app here:** [website-greenloop.vercel.app](https://website-greenloop.vercel.app)
+🌐 **Access the app here:** [website-greenloop.vercel.app](https://greenloop-project.vercel.app)
 
 # GreenLoop - Employee Sustainability Platform
 
