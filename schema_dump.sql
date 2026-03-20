@@ -1,5 +1,5 @@
 
-\restrict arj79am3tXgw53rycjaGOm6aXGD5BQpWOaIjtHMnO9NKSGwHzfI67n3pgT2hfkc
+\restrict 02P0oy9ASKErS40lWEKEH0zh9zLaDJdTjhyBNFqpdUemyeB4ELlIfYWN8WXcCUi
 
 
 SET statement_timeout = 0;
@@ -251,7 +251,8 @@ ALTER FUNCTION "public"."can_leave_team_challenge"("participant_user_id" "uuid",
 
 
 CREATE OR REPLACE FUNCTION "public"."check_and_award_badges"() RETURNS "trigger"
-    LANGUAGE "plpgsql"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO 'public'
     AS $$
 DECLARE
   badge_record RECORD;
@@ -268,12 +269,12 @@ BEGIN
   END IF;
 
   -- Loop through all active badges
-  FOR badge_record IN 
+  FOR badge_record IN
     SELECT * FROM public.badges WHERE is_active = true
   LOOP
     -- Check if user already has this badge
     IF NOT EXISTS (
-      SELECT 1 FROM public.user_badges 
+      SELECT 1 FROM public.user_badges
       WHERE user_id = target_user_id AND badge_id = badge_record.id
     ) THEN
       -- Get user's current value for the badge criteria
@@ -281,11 +282,11 @@ BEGIN
         WHEN 'points' THEN
           SELECT points INTO user_value FROM public.users WHERE id = target_user_id;
         WHEN 'actions' THEN
-          SELECT COUNT(*) INTO user_value 
-          FROM public.user_actions 
+          SELECT COUNT(*) INTO user_value
+          FROM public.user_actions
           WHERE user_id = target_user_id AND verification_status = 'approved';
         WHEN 'co2_saved' THEN
-          SELECT FLOOR(total_co2_saved) INTO user_value 
+          SELECT FLOOR(total_co2_saved) INTO user_value
           FROM public.users WHERE id = target_user_id;
         ELSE
           user_value := 0;
@@ -5749,6 +5750,6 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 
 
 
-\unrestrict arj79am3tXgw53rycjaGOm6aXGD5BQpWOaIjtHMnO9NKSGwHzfI67n3pgT2hfkc
+\unrestrict 02P0oy9ASKErS40lWEKEH0zh9zLaDJdTjhyBNFqpdUemyeB4ELlIfYWN8WXcCUi
 
 RESET ALL;
