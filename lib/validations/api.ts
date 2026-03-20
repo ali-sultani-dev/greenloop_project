@@ -21,7 +21,7 @@ export const sustainabilityActionSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100, "Title too long").trim(),
   description: z
     .string()
-    .min(10, "Description must be at least 10 characters")
+    .min(3, "Description must be at least 3 characters")
     .max(1000, "Description too long")
     .trim(),
   instructions: z.string().max(2000, "Instructions too long").trim().optional(),

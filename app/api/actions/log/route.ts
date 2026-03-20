@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { logActionSchema } from "@/lib/validations/api"
 import { authenticateUser, createErrorResponse, ApiException, checkRateLimit, sanitizeInput } from "@/lib/api-utils"
+import { createAdminClient } from "@/lib/supabase/admin"
 
 export async function POST(request: NextRequest) {
   try {
@@ -127,9 +128,12 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // If auto-approved, award points immediately
+    // If auto-approved, award points immediately using admin client to bypass RLS
+    // point_transactions has a policy that only allows admin or service_role inserts
     if (shouldAutoApprove) {
-      const { error: pointsUpdateError } = await supabase
+      const adminSupabase = createAdminClient()
+
+      const { error: pointsUpdateError } = await adminSupabase
         .from("users")
         .update({
           points: userProfile.points + action.points_value,
@@ -140,8 +144,8 @@ export async function POST(request: NextRequest) {
         console.error("Failed to update user points:", pointsUpdateError)
       }
 
-      // Create points transaction
-      await supabase.from("point_transactions").insert({
+      // Create points transaction — requires admin/service_role due to point_transactions_insert_system_only policy
+      await adminSupabase.from("point_transactions").insert({
         user_id: user.id,
         points: action.points_value,
         transaction_type: "earned",
