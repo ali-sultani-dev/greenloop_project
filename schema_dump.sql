@@ -1,5 +1,5 @@
 
-\restrict DdMbd7uruyi8grk8leF4lIdqZJocSpXjwe6Djes3rqb3LewDgmDoivAvNjlcICP
+\restrict arj79am3tXgw53rycjaGOm6aXGD5BQpWOaIjtHMnO9NKSGwHzfI67n3pgT2hfkc
 
 
 SET statement_timeout = 0;
@@ -1280,58 +1280,46 @@ CREATE OR REPLACE FUNCTION "public"."notify_action_status_change"() RETURNS "tri
     AS $$
 DECLARE
     action_title TEXT;
-    is_auto_logged BOOLEAN := FALSE;
 BEGIN
-    -- Only process status changes to approved or rejected
-    IF NEW.verification_status IN ('approved', 'rejected') AND 
-       (OLD IS NULL OR OLD.verification_status != NEW.verification_status) THEN
-        
-        -- Check if this is an auto-logged action (from personal action approval)
-        -- Auto-logged actions have notes = 'Auto-logged upon action approval'
-        IF NEW.notes = 'Auto-logged upon action approval' THEN
-            is_auto_logged := TRUE;
-        END IF;
-        
-        -- Skip notifications for auto-logged actions since they already get 
-        -- notifications from trigger_notify_user_action_submission_approved
-        IF NOT is_auto_logged THEN
-            -- Get the action title
-            SELECT title INTO action_title 
-            FROM sustainability_actions 
-            WHERE id = NEW.action_id;
-            
-            -- Send appropriate notification
-            IF NEW.verification_status = 'approved' THEN
-                PERFORM create_notification_if_enabled(
-                    NEW.user_id,
-                    'action_status',
-                    'Action Approved! ✅',
-                    'Your action ''' || COALESCE(action_title, 'Sustainability Action') || ''' has been approved! +' || 
-                    COALESCE(NEW.points_earned, 0) || ' points earned' ||
-                    CASE WHEN NEW.co2_saved > 0 THEN ' • ' || NEW.co2_saved || ' kg CO2 impact' ELSE '' END,
-                    '/actions',
-                    'action',
-                    NEW.id::TEXT
-                );
-            ELSIF NEW.verification_status = 'rejected' THEN
-                PERFORM create_notification_if_enabled(
-                    NEW.user_id,
-                    'action_status',
-                    'Action Rejected ❌',
-                    'Your action ''' || COALESCE(action_title, 'Sustainability Action') || ''' was rejected. Reason: ' || 
-                    COALESCE(NEW.notes, 'No reason provided'),
-                    '/actions',
-                    'action',
-                    NEW.id::TEXT
-                );
-            END IF;
+    -- Only process status changes, not other updates
+    IF TG_OP = 'UPDATE' AND OLD.verification_status = NEW.verification_status THEN
+        RETURN NEW;
+    END IF;
+
+    IF NEW.verification_status IN ('approved', 'rejected') THEN
+        SELECT title INTO action_title
+        FROM sustainability_actions
+        WHERE id = NEW.action_id;
+
+        IF NEW.verification_status = 'approved' THEN
+            PERFORM create_notification_if_enabled(
+                NEW.user_id,
+                'action_status',
+                'Action Approved! ✅',
+                'Your action ''' || COALESCE(action_title, 'Sustainability Action') || ''' has been approved! +' ||
+                COALESCE(NEW.points_earned, 0) || ' points earned' ||
+                CASE WHEN NEW.co2_saved > 0 THEN ' • Green Score: ' || NEW.co2_saved ELSE '' END,
+                '/actions',
+                'action',
+                NEW.id::TEXT
+            );
+        ELSIF NEW.verification_status = 'rejected' THEN
+            PERFORM create_notification_if_enabled(
+                NEW.user_id,
+                'action_status',
+                'Action Rejected ❌',
+                'Your action ''' || COALESCE(action_title, 'Sustainability Action') || ''' was rejected. Reason: ' ||
+                COALESCE(NEW.notes, 'No reason provided'),
+                '/actions',
+                'action',
+                NEW.id::TEXT
+            );
         END IF;
     END IF;
-    
+
     RETURN NEW;
 EXCEPTION
     WHEN OTHERS THEN
-        -- Log the error but don't fail the transaction
         RAISE WARNING 'Error sending action status notification for user %: %', NEW.user_id, SQLERRM;
         RETURN NEW;
 END;
@@ -1481,25 +1469,23 @@ BEGIN
     -- Only process when a user-submitted action becomes active (approved)
     IF NEW.is_active = TRUE AND NEW.is_user_created = TRUE AND NEW.submitted_by IS NOT NULL AND
        (OLD IS NULL OR OLD.is_active != TRUE) THEN
-        
-        -- Removed "and is now available for everyone" from notification message
+
         PERFORM create_notification_if_enabled(
             NEW.submitted_by,
             'action_status',
             'Action Approved! ✅',
-            'Your submitted action ''' || NEW.title || ''' has been approved! +' || 
+            'Your submitted action ''' || NEW.title || ''' has been approved! +' ||
             COALESCE(NEW.points_value, 0) || ' points earned' ||
-            CASE WHEN NEW.co2_impact > 0 THEN ' • ' || NEW.co2_impact || ' kg CO2 impact' ELSE '' END,
+            CASE WHEN NEW.co2_impact > 0 THEN ' • Green Score: ' || NEW.co2_impact ELSE '' END,
             '/actions',
             'action',
             NEW.id::TEXT
         );
     END IF;
-    
+
     RETURN NEW;
 EXCEPTION
     WHEN OTHERS THEN
-        -- Log the error but don't fail the transaction
         RAISE WARNING 'Error sending user action submission notification for user %: %', NEW.submitted_by, SQLERRM;
         RETURN NEW;
 END;
@@ -3250,6 +3236,10 @@ CREATE TABLE IF NOT EXISTS "public"."system_settings" (
 
 
 ALTER TABLE "public"."system_settings" OWNER TO "postgres";
+
+
+COMMENT ON TABLE "public"."system_settings" IS 'System-wide configuration settings including action_auto_approve_threshold for controlling auto-approval of logged actions';
+
 
 
 CREATE OR REPLACE VIEW "public"."team_performance_summary" AS
@@ -5759,6 +5749,6 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 
 
 
-\unrestrict DdMbd7uruyi8grk8leF4lIdqZJocSpXjwe6Djes3rqb3LewDgmDoivAvNjlcICP
+\unrestrict arj79am3tXgw53rycjaGOm6aXGD5BQpWOaIjtHMnO9NKSGwHzfI67n3pgT2hfkc
 
 RESET ALL;
