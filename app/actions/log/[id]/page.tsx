@@ -146,11 +146,6 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
     e.preventDefault()
     if (!action || !user) return
 
-    if (selectedFiles.length === 0) {
-      setError("Photo proof is required for all actions")
-      return
-    }
-
     if (action.verification_required && !notes.trim()) {
       setError("Notes are required for actions that need verification")
       return
@@ -338,14 +333,6 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
             </Alert>
           )}
 
-          <Alert>
-            <Camera className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Photo proof is required</strong> for all sustainability actions to ensure authenticity and proper
-              verification.
-            </AlertDescription>
-          </Alert>
-
           {/* Log Form */}
           <Card>
             <CardHeader>
@@ -374,18 +361,17 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
 
                 <div className="space-y-2">
                   <Label htmlFor="photos">
-                    Photos <span className="text-destructive">*</span>
-                    <span className="text-sm text-muted-foreground ml-2">Required - Max 3 photos</span>
+                    Photos
+                    <span className="text-sm text-muted-foreground ml-2">Optional - Max 3 photos</span>
                   </Label>
                   <div className="space-y-4">
-                    <Input
+                      <Input
                       id="photos"
                       type="file"
                       accept="image/*"
                       multiple
                       onChange={handleFileSelect}
                       className="cursor-pointer"
-                      required
                     />
 
                     {previewUrls.length > 0 && (
@@ -424,7 +410,7 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
                   <Button
                     type="submit"
                     disabled={
-                      isSubmitting || (action.verification_required && !notes.trim()) || selectedFiles.length === 0 // Disable submit if no photos
+                      isSubmitting || (action.verification_required && !notes.trim())
                     }
                     className="flex-1"
                   >
