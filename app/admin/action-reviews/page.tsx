@@ -71,7 +71,6 @@ export default function ActionReviewsPage() {
       const { data: actionLogs, error: logsError } = await supabase
         .from("user_actions")
         .select("*")
-        .not("photo_url", "is", null)
         .order("completed_at", { ascending: false })
 
       if (logsError) {

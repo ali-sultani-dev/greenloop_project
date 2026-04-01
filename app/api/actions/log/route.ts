@@ -41,14 +41,6 @@ export async function POST(request: NextRequest) {
     console.log("Validation passed:", validationResult.data)
     const { action_id, notes, has_photos, photo_url } = validationResult.data
 
-    if (!has_photos) {
-      return createErrorResponse({
-        message: "Photo proof is required for all actions",
-        code: "PHOTO_REQUIRED",
-        status: 400,
-      })
-    }
-
     // Get action details with better error handling
     const { data: action, error: actionError } = await supabase
       .from("sustainability_actions")
