@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -135,50 +135,41 @@ export default function CreateTeamPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-2 text-muted-foreground">Loading...</p>
-            </div>
+      <AppLayout user={user || undefined}>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-muted-foreground">Loading...</p>
           </div>
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
   if (!teamCreationEnabled && !user?.is_admin) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="max-w-2xl mx-auto">
-            <Card>
-              <CardContent className="text-center py-8">
-                <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <h3 className="font-medium mb-2">Team Creation Disabled</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Team creation is currently disabled. Contact your administrator for assistance.
-                </p>
-                <Button asChild>
-                  <Link href="/teams">Back to Teams</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
-      </div>
+      <AppLayout user={user || undefined}>
+        <div className="max-w-2xl mx-auto">
+          <Card>
+            <CardContent className="text-center py-8">
+              <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h3 className="font-medium mb-2">Team Creation Disabled</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Team creation is currently disabled. Contact your administrator for assistance.
+              </p>
+              <Button asChild>
+                <Link href="/teams">Back to Teams</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={user} />
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto space-y-6">
+    <AppLayout user={user || undefined}>
+      <div className="max-w-2xl mx-auto space-y-6">
           <Button variant="ghost" asChild className="mb-4">
             <Link href="/teams">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -303,7 +294,6 @@ export default function CreateTeamPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </AppLayout>
   )
 }

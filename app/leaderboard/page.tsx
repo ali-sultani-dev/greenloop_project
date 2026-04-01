@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -109,11 +109,8 @@ export default async function LeaderboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={userProfile} />
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile}>
+      <div className="space-y-8 max-w-7xl mx-auto">
           {/* Header */}
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
@@ -395,7 +392,6 @@ export default async function LeaderboardPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }

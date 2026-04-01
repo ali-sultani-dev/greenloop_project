@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -259,26 +259,22 @@ export default function NotificationsPage() {
 
   if (loading || isLoadingUser) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={userProfile || undefined} />
-        <div className="w-full px-4 py-8">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
-            <div className="space-y-4">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-24 bg-gray-200 rounded"></div>
-              ))}
-            </div>
+      <AppLayout user={userProfile || undefined}>
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-24 bg-gray-200 rounded"></div>
+            ))}
           </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={userProfile || undefined} />
-      <div className="w-full px-4 py-8">
+    <AppLayout user={userProfile || undefined}>
+      <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <BellRing className="h-8 w-8 text-primary" />
@@ -413,6 +409,6 @@ export default function NotificationsPage() {
           </div>
         )}
       </div>
-    </div>
+    </AppLayout>
   )
 }

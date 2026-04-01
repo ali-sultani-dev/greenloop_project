@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Megaphone, Calendar, Globe, Plus } from "lucide-react"
 import { ContentCrudModal } from "@/components/admin/content-crud-modal"
 import { useToast } from "@/hooks/use-toast"
-import { Navigation } from "@/components/navigation"
-import { NatureBackground } from "@/components/ui/nature-background"
+import { AppLayout } from "@/components/app-layout"
 
 interface Announcement {
   id: string
@@ -107,23 +106,21 @@ export default function AnnouncementsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={userProfile} />
-        <div className="container mx-auto px-4 py-8">
+      <AppLayout user={userProfile}>
+        <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
             <p className="mt-4 text-muted-foreground">Loading announcements...</p>
           </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={userProfile} />
-        <div className="container mx-auto px-4 py-8">
+      <AppLayout user={userProfile}>
+        <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <p className="text-destructive">Error loading announcements: {error}</p>
             <Button onClick={() => window.location.reload()} className="mt-4">
@@ -131,17 +128,13 @@ export default function AnnouncementsPage() {
             </Button>
           </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative">
-      <NatureBackground className="fixed inset-0 z-0" />
-      <Navigation user={userProfile} />
-
-      <main className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile}>
+      <div className="space-y-8 max-w-7xl mx-auto">
           <div className="space-y-4 animate-organic-slide-up">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -244,7 +237,6 @@ export default function AnnouncementsPage() {
             )}
           </div>
         </div>
-      </main>
 
       {isAdmin && (
         <ContentCrudModal
@@ -257,6 +249,6 @@ export default function AnnouncementsPage() {
           restrictedType="announcement"
         />
       )}
-    </div>
+    </AppLayout>
   )
 }

@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -208,73 +208,61 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-2 text-muted-foreground">Loading action details...</p>
-            </div>
+      <AppLayout user={user || undefined}>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-muted-foreground">Loading action details...</p>
           </div>
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
   if (error && !action) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        </main>
-      </div>
+      <AppLayout user={user || undefined}>
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </AppLayout>
     )
   }
 
   if (success) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="max-w-md mx-auto">
-            <Card className="text-center">
-              <CardHeader>
-                <div className="mx-auto p-3 bg-green-100 rounded-full w-fit mb-4">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
-                </div>
-                <CardTitle className="text-xl">Action Logged Successfully!</CardTitle>
-                <CardDescription>
-                  Your action has been submitted for review. Upon approval, you'll earn {action.points_value} points and
-                  a Green Score of {action.co2_impact}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  An admin will review your submission and verify the completed action. Points will be added to your
-                  account once approved.
-                </p>
-                <Button asChild className="w-full">
-                  <Link href="/dashboard">Return to Dashboard</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
-      </div>
+      <AppLayout user={user || undefined}>
+        <div className="max-w-md mx-auto">
+          <Card className="text-center">
+            <CardHeader>
+              <div className="mx-auto p-3 bg-green-100 rounded-full w-fit mb-4">
+                <CheckCircle className="h-8 w-8 text-green-600" />
+              </div>
+              <CardTitle className="text-xl">Action Logged Successfully!</CardTitle>
+              <CardDescription>
+                Your action has been submitted for review. Upon approval, you&apos;ll earn {action.points_value} points and
+                a Green Score of {action.co2_impact}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                An admin will review your submission and verify the completed action. Points will be added to your
+                account once approved.
+              </p>
+              <Button asChild className="w-full">
+                <Link href="/dashboard">Return to Dashboard</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={user} />
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto space-y-6">
+    <AppLayout user={user || undefined}>
+      <div className="max-w-2xl mx-auto space-y-6">
           {/* Back Button */}
           <Button variant="ghost" asChild className="mb-4">
             <Link href="/actions">
@@ -438,7 +426,6 @@ export default function ActionLogPage({ params }: ActionLogPageProps) {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </AppLayout>
   )
 }

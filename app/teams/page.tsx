@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -105,11 +105,8 @@ export default async function TeamsPage() {
   const userTeamIds = userTeamMemberships?.map((membership) => membership.teams.id) || []
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={userProfile} />
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile}>
+      <div className="space-y-8 max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="space-y-2">
@@ -548,7 +545,6 @@ export default async function TeamsPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }

@@ -1,13 +1,12 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Award, Lock, CheckCircle, Crown, Sparkles, Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { NatureBackground } from "@/components/ui/nature-background"
 
 export default async function BadgesPage() {
   const supabase = await createClient()
@@ -90,12 +89,8 @@ export default async function BadgesPage() {
   const isAdmin = userProfile?.is_admin || false
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative">
-      <NatureBackground className="fixed inset-0 z-0" />
-      <Navigation user={userProfile} />
-
-      <main className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile}>
+      <div className="space-y-8 max-w-7xl mx-auto">
           <div className="space-y-4 animate-organic-slide-up">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -263,10 +258,9 @@ export default async function BadgesPage() {
                   </CardContent>
                 </Card>
               )
-            })}
+              })}
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }

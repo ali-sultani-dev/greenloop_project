@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MotivationalQuote } from "@/components/ui/motivational-quote"
-import { NatureBackground } from "@/components/ui/nature-background"
+
 import { EcoMetricCard } from "@/components/ui/eco-metric-card"
 import {
   Leaf,
@@ -130,12 +130,8 @@ export default async function DashboardPage() {
     .limit(2)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative">
-      <NatureBackground className="fixed inset-0 z-0" />
-      <Navigation user={userProfile} />
-
-      <main className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile}>
+      <div className="space-y-8 max-w-7xl mx-auto">
           <div className="space-y-4 animate-organic-slide-up max-w-4xl">
             <div className="flex items-center gap-3">
               <div className="animate-leaf-sway">
@@ -423,9 +419,8 @@ export default async function DashboardPage() {
                 </CardContent>
               </Card>
             </div>
-          </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

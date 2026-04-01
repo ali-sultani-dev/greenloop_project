@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createClient } from "@/lib/supabase/client"
 import { challengeFormSchema, type ChallengeFormData } from "@/lib/validations/challenge"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -195,78 +195,66 @@ export default function CreateChallengePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-2 text-muted-foreground">Loading...</p>
-            </div>
+      <AppLayout user={user || undefined}>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-muted-foreground">Loading...</p>
           </div>
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
   if (!challengeCreationEnabled && !user?.is_admin) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="max-w-2xl mx-auto">
-            <Card>
-              <CardContent className="text-center py-8">
-                <Trophy className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <h3 className="font-medium mb-2">Challenge Creation Disabled</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Challenge creation is currently disabled. Contact your administrator for assistance.
-                </p>
-                <Button asChild>
-                  <Link href="/challenges">Back to Challenges</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
-      </div>
+      <AppLayout user={user || undefined}>
+        <div className="max-w-2xl mx-auto">
+          <Card>
+            <CardContent className="text-center py-8">
+              <Trophy className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h3 className="font-medium mb-2">Challenge Creation Disabled</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Challenge creation is currently disabled. Contact your administrator for assistance.
+              </p>
+              <Button asChild>
+                <Link href="/challenges">Back to Challenges</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
     )
   }
 
   if (success) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="max-w-md mx-auto">
-            <Card className="text-center">
-              <CardHeader>
-                <div className="mx-auto p-3 bg-green-100 rounded-full w-fit mb-4">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
-                </div>
-                <CardTitle className="text-xl">Challenge Created Successfully!</CardTitle>
-                <CardDescription>
-                  Your challenge has been created and is now available for participants to join.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild className="w-full">
-                  <Link href="/challenges">View All Challenges</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
-      </div>
+      <AppLayout user={user || undefined}>
+        <div className="max-w-md mx-auto">
+          <Card className="text-center">
+            <CardHeader>
+              <div className="mx-auto p-3 bg-green-100 rounded-full w-fit mb-4">
+                <CheckCircle className="h-8 w-8 text-green-600" />
+              </div>
+              <CardTitle className="text-xl">Challenge Created Successfully!</CardTitle>
+              <CardDescription>
+                Your challenge has been created and is now available for participants to join.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/challenges">View All Challenges</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={user} />
-
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="space-y-6">
+    <AppLayout user={user || undefined}>
+      <div className="max-w-4xl mx-auto space-y-6">
           {/* Back Button */}
           <Button variant="ghost" asChild className="mb-4">
             <Link href="/challenges">
@@ -620,7 +608,6 @@ export default function CreateChallengePage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </AppLayout>
   )
 }

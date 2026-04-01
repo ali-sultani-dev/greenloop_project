@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -456,10 +456,8 @@ export default async function ChallengeDetailPage({ params }: { params: { id: st
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={userProfile} />
-
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <AppLayout user={userProfile || undefined}>
+      <div className="max-w-6xl mx-auto">
         <div className="mb-6">
           <Button variant="ghost" asChild className="gap-2">
             <Link href="/challenges">
@@ -807,6 +805,6 @@ export default async function ChallengeDetailPage({ params }: { params: { id: st
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </AppLayout>
   )
 }

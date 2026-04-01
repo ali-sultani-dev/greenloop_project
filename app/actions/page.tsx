@@ -3,14 +3,14 @@
 import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { InteractiveSearch } from "@/components/admin/interactive-search"
 import { UserActionSubmissionModal } from "@/components/user-action-submission-modal"
-import { NatureBackground } from "@/components/ui/nature-background"
+
 import {
   Target,
   Car,
@@ -246,28 +246,20 @@ export default function ActionsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative">
-        <NatureBackground className="fixed inset-0 z-0" />
-        <Navigation user={userProfile} />
-        <main className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center animate-organic-slide-up">
-              <div className="animate-nature-pulse rounded-full h-12 w-12 border-4 border-primary/30 border-t-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">🌱 Loading sustainability actions...</p>
-            </div>
+      <AppLayout user={userProfile}>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center animate-organic-slide-up">
+            <div className="animate-nature-pulse rounded-full h-12 w-12 border-4 border-primary/30 border-t-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading sustainability actions...</p>
           </div>
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative">
-      <NatureBackground className="fixed inset-0 z-0" />
-      <Navigation user={userProfile} />
-
-      <main className="relative z-10 w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile}>
+      <div className="space-y-8 max-w-7xl mx-auto">
           <div className="space-y-4 animate-organic-slide-up">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -569,7 +561,6 @@ export default function ActionsPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }

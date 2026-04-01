@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -314,26 +314,20 @@ export default function ChallengesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={userProfile} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-2 text-muted-foreground">Loading challenges...</p>
-            </div>
+      <AppLayout user={userProfile}>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-muted-foreground">Loading challenges...</p>
           </div>
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={userProfile} />
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile}>
+      <div className="space-y-8 max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="space-y-2">
@@ -895,7 +889,6 @@ export default function ChallengesPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }
