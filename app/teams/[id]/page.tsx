@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -106,11 +106,8 @@ export default async function TeamPage({ params }: TeamPageProps) {
   const avgCO2PerMember = totalMembers > 0 ? (team.total_co2_saved / totalMembers).toFixed(1) : "0"
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={userProfile} />
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
+    <AppLayout user={userProfile || undefined}>
+      <div className="max-w-6xl mx-auto space-y-8">
           {/* Back Button */}
           <Button variant="ghost" asChild>
             <Link href="/teams">
@@ -420,7 +417,6 @@ export default async function TeamPage({ params }: TeamPageProps) {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
-    </div>
+      </AppLayout>
   )
 }

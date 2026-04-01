@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -216,26 +216,20 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
+      <AppLayout user={user}>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
               <p className="mt-2 text-muted-foreground">Loading settings...</p>
             </div>
           </div>
-        </main>
-      </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={user} />
-
-      <main className="px-6 py-8 w-full">
-        <div className="w-full space-y-8">
+    <AppLayout user={user}>
+      <div className="max-w-7xl mx-auto space-y-8">
           {/* Header */}
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
@@ -480,7 +474,6 @@ export default function SettingsPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }

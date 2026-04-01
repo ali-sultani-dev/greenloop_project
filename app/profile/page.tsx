@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { Navigation } from "@/components/navigation"
+import { AppLayout } from "@/components/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -216,26 +216,20 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation user={user} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
+      <AppLayout user={user}>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
               <p className="mt-2 text-muted-foreground">Loading profile...</p>
             </div>
           </div>
-        </main>
-      </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation user={user} />
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto space-y-8">
+    <AppLayout user={user}>
+      <div className="max-w-4xl mx-auto space-y-8">
           {/* Header */}
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
@@ -429,7 +423,7 @@ export default function ProfilePage() {
                       </div>
                       <span className="text-sm font-medium">Green Score</span>
                     </div>
-                    <Badge variant="secondary">{user?.total_co2_saved || 0}kg</Badge>
+                    <Badge variant="secondary">{user?.total_co2_saved || 0}</Badge>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -488,7 +482,6 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </AppLayout>
   )
 }
