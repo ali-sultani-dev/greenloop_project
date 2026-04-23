@@ -1,4 +1,4 @@
-import { NotificationHelpers } from "@/lib/notifications"
+import { createNotification, NotificationHelpers } from "@/lib/notifications"
 
 const mockRpc = jest.fn().mockResolvedValue({ data: { id: "notif-1" }, error: null })
 
@@ -19,9 +19,44 @@ jest.mock("next/headers", () => ({
   ),
 }))
 
+const mockCreateClient = require("@/lib/supabase/server").createClient
+
+describe("createNotification", () => {
+  beforeEach(() => {
+    mockRpc.mockResolvedValue({ data: { id: "notif-1" }, error: null })
+  })
+
+  it("throws when rpc returns an error", async () => {
+    mockRpc.mockResolvedValueOnce({ data: null, error: { message: "rpc failed" } })
+    await expect(
+      createNotification({
+        user_id: "u1",
+        type: "action_status",
+        title: "T",
+        message: "M",
+      })
+    ).rejects.toThrow("Database error: rpc failed")
+  })
+
+  it("rethrows when supabase client creation fails", async () => {
+    mockCreateClient.mockRejectedValueOnce(new Error("no cookies"))
+    await expect(
+      createNotification({
+        user_id: "u1",
+        type: "action_status",
+        title: "T",
+        message: "M",
+      })
+    ).rejects.toThrow("no cookies")
+  })
+})
+
 describe("NotificationHelpers", () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    mockCreateClient.mockImplementation(() =>
+      Promise.resolve({ rpc: mockRpc })
+    )
   })
 
   it("actionApproved builds correct params", async () => {
@@ -98,5 +133,25 @@ describe("NotificationHelpers", () => {
         p_title: "New Achievement Unlocked! 🏆",
       })
     )
+  })
+
+  it("exercises remaining helper factories", async () => {
+    await NotificationHelpers.challengeProgress("u1", "C", 50)
+    await NotificationHelpers.challengeRanking("u1", "C", 3)
+    await NotificationHelpers.addedToTeam("u1", "Team A")
+    await NotificationHelpers.teamAchievement("u1", "Team A")
+    await NotificationHelpers.teamRanking("u1", "Team A", 2)
+    await NotificationHelpers.announcement("u1", "Hi", "body")
+    await NotificationHelpers.announcement("u1", "NoBody")
+    await NotificationHelpers.newEducationalContent("u1", "Lesson")
+    await NotificationHelpers.sustainabilityTip("u1", "Turn off lights")
+    await NotificationHelpers.rewardRejected("u1", "Mug", "out of stock")
+    await NotificationHelpers.rewardDelivered("u1", "Mug", "Left at desk")
+    await NotificationHelpers.leaderboardMovement("u1", 2, 5)
+    await NotificationHelpers.leaderboardTop("u1")
+    await NotificationHelpers.leaderboardTrending("u1", 4)
+    await NotificationHelpers.milestone("u1", "1000 points")
+    await NotificationHelpers.weeklyPoints("u1", 42)
+    expect(mockRpc).toHaveBeenCalled()
   })
 })

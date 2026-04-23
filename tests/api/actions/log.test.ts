@@ -5,6 +5,10 @@ jest.mock("@/lib/supabase/server", () => ({
   createClient: jest.fn(),
 }))
 
+jest.mock("@/lib/supabase/admin", () => ({
+  createAdminClient: jest.fn(),
+}))
+
 jest.mock("next/headers", () => ({
   cookies: jest.fn(() =>
     Promise.resolve({
@@ -15,6 +19,7 @@ jest.mock("next/headers", () => ({
 }))
 
 const mockCreateClient = require("@/lib/supabase/server").createClient
+const mockCreateAdminClient = require("@/lib/supabase/admin").createAdminClient
 
 const validActionId = "550e8400-e29b-41d4-a716-446655440000"
 
@@ -90,7 +95,7 @@ describe("POST /api/actions/log", () => {
     expect(body.code).toBe("VALIDATION_ERROR")
   })
 
-  it("returns 400 when has_photos is false (photo required)", async () => {
+  it("returns 201 when has_photos is false (valid optional field)", async () => {
     const mock = createMockSupabase()
     mockCreateClient.mockResolvedValue(mock)
 
@@ -100,9 +105,95 @@ describe("POST /api/actions/log", () => {
     })
 
     const response = await POST(request)
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(201)
     const body = await response.json()
-    expect(body.code).toBe("PHOTO_REQUIRED")
+    expect(body.data.verification_required).toBe(true)
+  })
+
+  it("returns 201 on success (pending verification by default)", async () => {
+    const mock = createMockSupabase()
+    mockCreateClient.mockResolvedValue(mock)
+
+    const request = createMockRequest({
+      action_id: validActionId,
+      has_photos: true,
+    })
+
+    const response = await POST(request)
+    expect(response.status).toBe(201)
+    const body = await response.json()
+    expect(body.data.auto_approved).toBe(false)
+  })
+
+  it("returns 201 with auto-approve and updates points via admin client when under threshold", async () => {
+    const mock = createMockSupabase({
+      sustainabilityAction: {
+        data: { id: validActionId, title: "Low impact", points_value: 10, co2_impact: 0.1 },
+        error: null,
+      },
+      thresholdSetting: { data: { setting_value: "50" }, error: null },
+    })
+    mockCreateClient.mockResolvedValue(mock)
+    const adminFrom = jest.fn((table: string) => {
+      if (table === "users") {
+        return {
+          update: jest.fn().mockReturnValue({
+            eq: jest.fn().mockResolvedValue({ error: null }),
+          }),
+        }
+      }
+      if (table === "point_transactions") {
+        return {
+          insert: jest.fn().mockResolvedValue({ error: null }),
+        }
+      }
+      return {}
+    })
+    mockCreateAdminClient.mockReturnValue({ from: adminFrom })
+
+    const request = createMockRequest({
+      action_id: validActionId,
+      has_photos: true,
+    })
+
+    const response = await POST(request)
+    expect(response.status).toBe(201)
+    const body = await response.json()
+    expect(body.data.auto_approved).toBe(true)
+    expect(mockCreateAdminClient).toHaveBeenCalled()
+    expect(adminFrom).toHaveBeenCalledWith("users")
+    expect(adminFrom).toHaveBeenCalledWith("point_transactions")
+  })
+
+  it("returns 500 when user_actions insert fails", async () => {
+    const mock = createMockSupabase({
+      actionLog: { data: null, error: { message: "db fail" } },
+    })
+    mockCreateClient.mockResolvedValue(mock)
+
+    const request = createMockRequest({
+      action_id: validActionId,
+      has_photos: true,
+    })
+
+    const response = await POST(request)
+    expect(response.status).toBe(500)
+    const body = await response.json()
+    expect(body.code).toBe("DATABASE_ERROR")
+  })
+
+  it("returns 500 for unexpected error", async () => {
+    mockCreateClient.mockRejectedValue(new Error("client boom"))
+
+    const request = createMockRequest({
+      action_id: validActionId,
+      has_photos: true,
+    })
+
+    const response = await POST(request)
+    expect(response.status).toBe(500)
+    const body = await response.json()
+    expect(body.code).toBe("INTERNAL_ERROR")
   })
 
   it("returns 401 when unauthenticated", async () => {

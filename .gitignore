@@ -22,6 +22,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# jest
+/coverage
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

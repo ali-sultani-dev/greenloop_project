@@ -2,6 +2,7 @@ import {
   createErrorResponse,
   checkRateLimit,
   sanitizeInput,
+  logSecurityEvent,
 } from "@/lib/api-utils"
 
 describe("createErrorResponse", () => {
@@ -132,5 +133,31 @@ describe("sanitizeInput", () => {
       a: [{ b: "x" }],
       c: { d: { e: "nested" } },
     })
+  })
+})
+
+describe("logSecurityEvent", () => {
+  it("inserts a row via supabase and resolves", async () => {
+    const insert = jest.fn().mockResolvedValue({ error: null })
+    const supabase = {
+      from: jest.fn().mockReturnValue({ insert }),
+    }
+    await logSecurityEvent(supabase, "u1", "login", { x: 1 }, "low")
+    expect(supabase.from).toHaveBeenCalledWith("security_logs")
+    expect(insert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        user_id: "u1",
+        event_type: "login",
+        severity: "low",
+      })
+    )
+  })
+
+  it("swallows errors from insert and does not throw", async () => {
+    const insert = jest.fn().mockRejectedValue(new Error("log fail"))
+    const supabase = { from: jest.fn().mockReturnValue({ insert }) }
+    await expect(
+      logSecurityEvent(supabase, "u1", "event", {}, "high")
+    ).resolves.toBeUndefined()
   })
 })

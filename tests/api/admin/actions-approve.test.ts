@@ -193,4 +193,184 @@ describe("POST /api/admin/actions/approve", () => {
     expect(body.success).toBe(true)
     expect(body.message).toContain("approved")
   })
+
+  it("returns 200 when isSubmission is approved and auto-logged for submitter", async () => {
+    let supabaseSustainIndex = 0
+    let usersFromCall = 0
+    const submissionAction = {
+      id: "action-1",
+      title: "Submitted",
+      submitted_by: "user-sub",
+      is_user_created: true,
+    }
+
+    mockCreateClient.mockResolvedValue({
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "admin-1" } }, error: null }) },
+      from: jest.fn((table: string) => {
+        if (table === "users") {
+          usersFromCall += 1
+          if (usersFromCall === 1) {
+            return createMockChain({ data: { is_admin: true }, error: null })
+          }
+          return createMockChain({ data: { id: "user-sub" }, error: null })
+        }
+        if (table === "sustainability_actions") {
+          if (supabaseSustainIndex++ === 0) {
+            return {
+              select: jest.fn().mockReturnThis(),
+              eq: jest.fn().mockReturnThis(),
+              single: jest.fn().mockResolvedValue({ data: submissionAction, error: null }),
+            }
+          }
+          return {
+            update: jest.fn().mockReturnValue({
+              eq: jest.fn().mockResolvedValue({ error: null }),
+            }),
+          }
+        }
+        return createMockChain({ data: null, error: null })
+      }),
+    })
+
+    let adminUsersCount = 0
+    mockCreateAdminClient.mockReturnValue({
+      from: jest.fn((table: string) => {
+        if (table === "user_actions") {
+          return {
+            insert: jest.fn().mockReturnValue({
+              select: jest.fn().mockReturnValue({
+                single: jest
+                  .fn()
+                  .mockResolvedValue({ data: { id: "log-sub-1" }, error: null }),
+              }),
+            }),
+          }
+        }
+        if (table === "users") {
+          if (adminUsersCount++ === 0) {
+            return {
+              select: jest.fn().mockReturnThis(),
+              eq: jest.fn().mockReturnThis(),
+              single: jest
+                .fn()
+                .mockResolvedValue({ data: { points: 100, total_co2_saved: 5 }, error: null }),
+            }
+          }
+          return {
+            update: jest.fn().mockReturnValue({
+              eq: jest.fn().mockResolvedValue({ error: null }),
+            }),
+          }
+        }
+        if (table === "point_transactions") {
+          return {
+            insert: jest.fn().mockResolvedValue({ error: null }),
+          }
+        }
+        return {}
+      }),
+    })
+
+    const request = createMockRequest({
+      actionId: "action-1",
+      pointsValue: 25,
+      co2Impact: 1.2,
+      isSubmission: true,
+    })
+
+    const response = await POST(request)
+    expect(response.status).toBe(200)
+    const body = await response.json()
+    expect(body.message).toContain("auto-logged for submitter")
+  })
+
+  it("returns 404 when submitter user not found (isSubmission)", async () => {
+    const submissionAction = {
+      id: "action-1",
+      title: "Submitted",
+      submitted_by: "user-sub",
+      is_user_created: true,
+    }
+    let usersFromCall = 0
+    mockCreateClient.mockResolvedValue({
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "admin-1" } }, error: null }) },
+      from: jest.fn((table: string) => {
+        if (table === "users") {
+          usersFromCall += 1
+          if (usersFromCall === 1) {
+            return createMockChain({ data: { is_admin: true }, error: null })
+          }
+          return createMockChain({ data: null, error: { message: "nope" } })
+        }
+        if (table === "sustainability_actions") {
+          return {
+            select: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockReturnThis(),
+            single: jest.fn().mockResolvedValue({ data: submissionAction, error: null }),
+          }
+        }
+        return createMockChain({ data: null, error: null })
+      }),
+    })
+
+    const request = createMockRequest({
+      actionId: "action-1",
+      pointsValue: 25,
+      co2Impact: 1.2,
+      isSubmission: true,
+    })
+    const response = await POST(request)
+    expect(response.status).toBe(404)
+    const body = await response.json()
+    expect(body.code).toBe("USER_NOT_FOUND")
+  })
+
+  it("returns 500 when sustainability_actions update fails (isSubmission)", async () => {
+    const submissionAction = {
+      id: "action-1",
+      title: "Submitted",
+      submitted_by: "user-sub",
+      is_user_created: true,
+    }
+    let sustainIndex = 0
+    let usersFromCall = 0
+    mockCreateClient.mockResolvedValue({
+      auth: { getUser: jest.fn().mockResolvedValue({ data: { user: { id: "admin-1" } }, error: null }) },
+      from: jest.fn((table: string) => {
+        if (table === "users") {
+          usersFromCall += 1
+          if (usersFromCall === 1) {
+            return createMockChain({ data: { is_admin: true }, error: null })
+          }
+          return createMockChain({ data: { id: "user-sub" }, error: null })
+        }
+        if (table === "sustainability_actions") {
+          if (sustainIndex++ === 0) {
+            return {
+              select: jest.fn().mockReturnThis(),
+              eq: jest.fn().mockReturnThis(),
+              single: jest.fn().mockResolvedValue({ data: submissionAction, error: null }),
+            }
+          }
+          return {
+            update: jest.fn().mockReturnValue({
+              eq: jest.fn().mockResolvedValue({ error: { message: "update fail" } }),
+            }),
+          }
+        }
+        return createMockChain({ data: null, error: null })
+      }),
+    })
+
+    const request = createMockRequest({
+      actionId: "action-1",
+      pointsValue: 25,
+      co2Impact: 1.2,
+      isSubmission: true,
+    })
+    const response = await POST(request)
+    expect(response.status).toBe(500)
+    const body = await response.json()
+    expect(body.code).toBe("DATABASE_ERROR")
+  })
 })

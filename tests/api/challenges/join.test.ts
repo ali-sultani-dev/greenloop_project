@@ -203,4 +203,59 @@ describe("POST /api/challenges/[id]/join", () => {
     expect(body.message).toContain("Successfully joined")
     expect(body.participation).toBeDefined()
   })
+
+  it("returns 500 when max-participant RPC check fails", async () => {
+    mockCreateClient.mockResolvedValue(
+      createMockSupabase({
+        challenge: {
+          data: {
+            id: validChallengeId,
+            challenge_type: "individual",
+            end_date: futureDate.toISOString(),
+            max_participants: 10,
+          },
+          error: null,
+        },
+        rpc: { data: null, error: { message: "rpc failed" } },
+      })
+    )
+
+    const request = createMockRequest()
+    const response = await POST(request, { params: { id: validChallengeId } })
+
+    expect(response.status).toBe(500)
+    const body = await response.json()
+    expect(body.error).toContain("validate participation")
+  })
+
+  it("returns 500 when insert fails", async () => {
+    mockCreateClient.mockResolvedValue(
+      createMockSupabase({
+        insert: { data: null, error: { message: "insert failed" } },
+      })
+    )
+
+    const request = createMockRequest()
+    const response = await POST(request, { params: { id: validChallengeId } })
+
+    expect(response.status).toBe(500)
+    const body = await response.json()
+    expect(body.error).toContain("Failed to join")
+  })
+
+  it("returns 500 on unexpected error in join handler", async () => {
+    mockCreateClient.mockResolvedValue({
+      auth: {
+        getUser: jest.fn().mockResolvedValue({ data: { user: { id: "user-1" } }, error: null }),
+      },
+      from: jest.fn(() => {
+        throw new Error("db connection lost")
+      }),
+      rpc: jest.fn(),
+    })
+
+    const request = createMockRequest()
+    const response = await POST(request, { params: { id: validChallengeId } })
+    expect(response.status).toBe(500)
+  })
 })
